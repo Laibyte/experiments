@@ -1,0 +1,106 @@
+[tool.poetry]
+name = "my-project"
+version = "0.1.0"
+description = "A balanced Python project for everyday use"
+authors = ["Your Name <your.email@example.com>"]
+readme = "README.md"
+packages = [{include = "*", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+selenium = "^4.38.0"
+google-generativeai = "^0.8.5"
+python-dotenv = "^1.2.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.4.2"
+pytest-cov = "^7.0.0"
+ruff = "^0.14.3"
+mypy = "^1.18.2"
+pre-commit = "^4.3.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+# Ruff - Fast linting and formatting
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+fix = true
+
+[tool.ruff.lint]
+select = [
+    "E",      # pycodestyle errors
+    "W",      # pycodestyle warnings
+    "F",      # pyflakes
+    "I",      # isort
+    "B",      # flake8-bugbear
+    "C4",     # flake8-comprehensions
+    "UP",     # pyupgrade
+    "SIM",    # flake8-simplify
+    "PTH",    # flake8-use-pathlib
+]
+
+ignore = [
+    "E501",     # line too long (handled by formatter)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    "S101",     # Allow assert in tests
+    "ARG",      # Allow unused arguments in tests
+]
+"__init__.py" = [
+    "F401",     # Allow unused imports
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+# mypy - Type checking (relaxed for experiments)
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+check_untyped_defs = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+show_error_codes = true
+pretty = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+
+# pytest - Testing
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "-v",
+    "--cov=src",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-fail-under=70",
+]
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["*/tests/*", "*/__pycache__/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "@abstractmethod",
+]

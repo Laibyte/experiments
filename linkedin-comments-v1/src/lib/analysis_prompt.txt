@@ -1,0 +1,13 @@
+Analyze this LinkedIn post. Provide a one-sentence summary and 2-4 relevant categories (e.g., AI, Career Advice, Product Launch, Technology, Business).
+
+Post content:
+{post_content}
+
+Return JSON format:
+{{
+  "summary": "One-sentence summary of the post",
+  "categories": ["Category1", "Category2", "Category3"]
+}}
+
+Only return the JSON, no additional text.
+

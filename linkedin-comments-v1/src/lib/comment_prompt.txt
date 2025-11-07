@@ -1,0 +1,16 @@
+Given this LinkedIn post, summary, categories, and my persona, generate 3 distinct comment suggestions. Make them authentic, valuable, and aligned with my voice. Avoid generic praise and strive for meaningful engagement.
+
+Post content:
+{post_content}
+
+Summary: {summary}
+Categories: {categories}
+
+My persona:
+{persona}
+
+Return JSON array of exactly 3 comment strings:
+["Comment 1", "Comment 2", "Comment 3"]
+
+Only return the JSON array, no additional text.
+
