@@ -422,7 +422,9 @@ class FeedCollector:
         Returns:
             Post data dictionary or None if extraction fails.
         """
-        self.driver = self.auth_handler.authenticate()
+        # Only authenticate if driver is not already set (reused from another handler)
+        if not self.driver:
+            self.driver = self.auth_handler.authenticate()
 
         if not self.driver:
             raise RuntimeError("Failed to authenticate")
@@ -466,7 +468,9 @@ class FeedCollector:
         Returns:
             List of post dictionaries.
         """
-        self.driver = self.auth_handler.authenticate()
+        # Only authenticate if driver is not already set (reused from another handler)
+        if not self.driver:
+            self.driver = self.auth_handler.authenticate()
 
         if not self.driver:
             raise RuntimeError("Failed to authenticate")
@@ -575,7 +579,9 @@ class FeedCollector:
         Args:
             num_posts: Number of posts to inspect.
         """
-        self.driver = self.auth_handler.authenticate()
+        # Only authenticate if driver is not already set (reused from another handler)
+        if not self.driver:
+            self.driver = self.auth_handler.authenticate()
 
         if not self.driver:
             raise RuntimeError("Failed to authenticate")

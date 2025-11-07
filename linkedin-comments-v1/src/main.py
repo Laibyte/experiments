@@ -208,6 +208,7 @@ def cmd_full(args: argparse.Namespace) -> None:
 
     # Phase II: Collect posts
     print("\n[Phase II] Collecting posts...")
+    # Create collector with headless flag, then reuse the authenticated handler
     collector = FeedCollector(headless=args.headless)
     collector.auth_handler = handler  # Reuse authenticated session
     collector.driver = handler.driver
