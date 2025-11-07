@@ -1,0 +1,21 @@
+{
+  "$schema": "https://unpkg.com/cursor-hooks/schema/hooks.schema.json",
+  "version": 1,
+  "hooks": {
+    "beforeSubmitPrompt": [
+      {
+        "command": "sh -c 'echo \"$(date +%Y-%m-%d\\ %H:%M:%S) - Prompt submitted\" >> .cursor/hooks.log'"
+      }
+    ],
+    "beforeShellExecution": [
+      {
+        "command": ".cursor/hooks/check-shell.sh"
+      }
+    ],
+    "stop": [
+      {
+        "command": ".cursor/hooks/final-check.sh"
+      }
+    ]
+  }
+}

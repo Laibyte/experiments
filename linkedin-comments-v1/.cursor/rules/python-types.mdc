@@ -1,0 +1,58 @@
+---
+description: Type hints and type checking standards
+globs: ["**/*.py"]
+---
+
+# Python Type Hints
+
+## Type Annotations (MANDATORY)
+- Every function MUST have complete type hints
+- Use modern syntax: `list[str]` not `List[str]`
+- Use `X | None` instead of `Optional[X]`
+- Use `typing.Final` for constants
+- Use `typing.Protocol` for structural subtyping
+- Never use `Any` unless absolutely necessary
+
+## Collections
+- Use `collections.abc` types:
+  - `Sequence` for read-only ordered collections
+  - `Mapping` for read-only dictionaries
+  - `Iterable` for iteration
+  - `Iterator` for iterators
+
+## Type Aliases
+```python
+from typing import TypeAlias
+
+UserId: TypeAlias = int
+UserData: TypeAlias = dict[str, str | int]
+```
+
+## Examples
+
+```python
+from typing import Final
+from collections.abc import Sequence
+
+MAX_RETRIES: Final[int] = 3
+
+def process_items(
+    items: Sequence[str],
+    count: int | None = None
+) -> dict[str, int]:
+    """Process items and return counts."""
+    ...
+```
+
+## Avoid
+
+```python
+# ❌ Bad
+def func(items):  # Missing type hints
+    ...
+
+def func(items: Any) -> Any:  # Using Any
+    ...
+
+from typing import Optional, List  # Old-style imports
+```

@@ -1,0 +1,203 @@
+---
+description: Project-specific standards and conventions
+alwaysApply: true
+---
+
+# Project-Specific Standards
+
+## Project Structure
+
+```
+python-template/
+├── src/                    # All source code here
+│   └── main.py            # Entry point
+├── tests/                  # All tests (mirror src/)
+│   ├── conftest.py        # Pytest fixtures
+│   └── test_main.py
+├── docs/                   # Project documentation
+├── .cursor/                # Cursor IDE configuration
+├── .github/                # GitHub workflows and config
+└── .vscode/                # VSCode/Cursor settings
+```
+
+## Package Management
+
+- Use Poetry EXCLUSIVELY for dependency management
+- NEVER use pip, pipenv, or conda directly
+- Add dependencies: `poetry add <package>`
+- Add dev dependencies: `poetry add <package> --group dev`
+- Always commit `poetry.lock` file
+
+## Documentation Requirements
+
+- All modules MUST have module docstrings
+- All classes MUST have class docstrings
+- All public functions MUST have docstrings
+- Use Google-style docstrings format
+
+### Docstring Template
+
+```python
+def function_name(param1: str, param2: int) -> bool:
+    """Short description on one line.
+
+    Longer description if needed. Explain the purpose,
+    not the implementation details.
+
+    Args:
+        param1: Description of param1
+        param2: Description of param2
+
+    Returns:
+        Description of return value
+
+    Raises:
+        ValueError: When param1 is empty
+        TypeError: When param2 is not an integer
+
+    Examples:
+        >>> function_name("test", 5)
+        True
+    """
+```
+
+## Code Quality Workflow
+
+### Before Committing
+
+Run all quality checks:
+```bash
+poetry run poe all
+# or
+make all
+```
+
+Individual checks:
+1. `poetry run poe format` - Format code with Ruff
+2. `poetry run poe lint-fix` - Fix linting issues
+3. `poetry run poe type-check` - Check types with mypy
+4. `poetry run poe test` - Run tests with coverage
+5. Ensure coverage >= 80%
+
+### Pre-commit Hooks
+
+Pre-commit hooks run automatically on `git commit`:
+- Ruff formatting and linting
+- mypy type checking
+- Bandit security scanning
+- detect-secrets credential detection
+- Conventional commit message validation
+
+If hooks fail, fix issues and commit again. Do NOT bypass with `--no-verify`.
+
+## Testing Requirements
+
+- Minimum 80% code coverage required
+- Write tests for ALL new functions and classes
+- Use pytest fixtures for shared setup
+- Use `@pytest.mark.parametrize` for multiple test cases
+- Mark slow tests with `@pytest.mark.slow`
+- Mark integration tests with `@pytest.mark.integration`
+
+### Test Structure
+
+```python
+def test_function_happy_path() -> None:
+    """Test function with valid input."""
+    # Arrange
+    input_data = "test"
+
+    # Act
+    result = function(input_data)
+
+    # Assert
+    assert result == expected
+```
+
+## Configuration
+
+All tool configurations are in `pyproject.toml`:
+- Ruff (linting/formatting)
+- mypy (type checking)
+- pytest (testing/coverage)
+- Bandit (security)
+- poethepoet (task runner)
+
+## File Organization
+
+- Source code: `src/` directory
+- Tests: `tests/` directory (mirrors `src/` structure)
+- One class per file (generally)
+- Group related functions in modules
+- Use `__init__.py` for public API exports
+
+## Import Organization
+
+Ruff automatically organizes imports in this order:
+1. Standard library imports
+2. Third-party imports
+3. Local application imports
+
+Separate each group with a blank line.
+
+## Error Messages
+
+- All exceptions MUST include descriptive messages
+- Use f-strings for formatting error messages
+- Include relevant context in error messages
+
+```python
+if not user_id:
+    msg = f"Invalid user_id: {user_id!r}"
+    raise ValueError(msg)
+```
+
+## Environment Variables
+
+- NEVER hardcode secrets or API keys
+- Use `os.getenv()` with type checking
+- Provide clear error messages for missing variables
+
+```python
+import os
+
+def get_api_key() -> str:
+    """Get API key from environment."""
+    api_key = os.getenv("API_KEY")
+    if not api_key:
+        msg = "API_KEY environment variable not set"
+        raise ValueError(msg)
+    return api_key
+```
+
+## Git Workflow
+
+1. Make changes
+2. Run quality checks: `poetry run poe all`
+3. Stage changes: `git add .`
+4. Commit with conventional commit message
+5. Pre-commit hooks run automatically
+6. Push to remote
+
+### Conventional Commits
+
+Required format: `<type>(<scope>): <subject>`
+
+Example: `feat(auth): add password reset endpoint`
+
+See `.cursor/rules/conventional-commits.mdc` for details.
+
+## AI Assistant Integration
+
+This project is optimized for AI-assisted development:
+- Cursor rules in `.cursor/rules/`
+- GitHub Copilot instructions in `.github/copilot-instructions.md`
+- Custom commands in `.cursor/commands/`
+- Automated hooks in `.cursor/hooks/`
+
+When working with AI assistants:
+- Be specific in your requests
+- Reference existing patterns in the codebase
+- Request tests along with implementation
+- Ask for docstrings to be added
+- Have AI run quality checks after changes
